@@ -1,5 +1,5 @@
 {	"name": "make-static",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	
 	"author": "ooxi <violetland@mail.ru>",
 	"description": "Offers a simple way of exporting pseudo dynamic websites as static html",
