@@ -33,28 +33,3 @@ What do I have to keep in mind when using make-static
    While make-static will support multiple base URLs in the future, it does not
    do so now.
 
-
-TODO
-----
-
- * Change `MakeStatic.progress` and `MakeStatic.finished' to event emitter style
- * Add nodejitsu appliance
- * Instead of manually checking whether a document URI is below the base URI the
-   `Path` object should take care of the check at a central location
- * Add support for multiple base URIs
- * Add support for stripping references to external content (for offline export)
- * `ReferencedAssets` and `ReferencedDocuments` share a fair amount of code
- * Handle non HTML documents (like links to images)
- * Handle assets referenced inside assets (CSS)
- * Handle assets referenced in inline stylesheets
- * Make abstract filesystem implementation so export can be written to arbitrary
-   backends without being written to the local filesystem at first (really
-   necessary?)
- * Split library from command line tool (would remove quite a view dependencies
-   on the one side but on the other side the API is neither stable nor in wide
-   use)
- * Support compression to zip file (which is surprisingly complex since no
-   library I have tried so far can compress recursive directories without
-   corrupting some files here and there o_O)
- * Support document rate limiting (currently one document after another will be
-   exported but this seams to be too fast for some servers...)
