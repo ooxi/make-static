@@ -1,0 +1,6 @@
+---
+base: ubuntu:20.04
+install:
+ - nodejs
+ - npm
+---
