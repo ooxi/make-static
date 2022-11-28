@@ -21,6 +21,7 @@
  *
  *  3. This notice may not be removed or altered from any source distribution.
  */
+var TraceError = require('trace-error');
 var URI = require('URIjs');
 
 
@@ -52,12 +53,19 @@ module.exports = function(_base, _document, _path) {
 			}
 			var relative = new URI(value);
 
-			/* Neighter data nor mailto URL are interesting
+			/* We are not interested in certain protocols
 			 */
-			if (('data' === relative.protocol()) || ('mailto' === relative.protocol())) {
+			const protocol = relative.protocol();
+			if (['callto', 'data', 'mailto', 'tel'].includes(protocol)) {
 				return;
 			}
-			var absolute = relative.absoluteTo(_document);
+
+			let absolute = null;
+			try {
+				absolute = relative.absoluteTo(_document);
+			} catch (e) {
+				throw new TraceError('Cannot resolve `' + relative + '\' absolute to `' + _document + '\'', e);
+			}
 
 
 			/* Do not change URI iff it's not below base
