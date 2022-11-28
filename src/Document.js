@@ -83,19 +83,6 @@ module.exports = function(_base, _asset, _path, _directory) {
 				return;
 			}
 			
-			/* If not an HTML document, abort
-			 * 
-			 * @warning This happens if the website links to a
-			 *     resource like an image. Since this isn't seldom
-			 *     and I think a link to a resource means it's not
-			 *     an asset but a document, this case should be
-			 *     handled, too
-			 */
-			if (!response.headers['content-type'] || !/^text\/html/i.test(response.headers['content-type']) || ('string' !== typeof(response.body))) {
-				cb(new Error('Can only process HTML documents but `'+ uri.toString() +'\' is of type `'+ response.headers['content-type'] +'\''));
-				return;
-			}
-			
 			cb(null, uri, response);
 		});
 	};
@@ -111,7 +98,7 @@ module.exports = function(_base, _asset, _path, _directory) {
 	 *     downloaded from the server
 	 * @param {callback} cb Should point to save
 	 */
-	var modify = function(uri, response, cb) {
+	var modifyHtml = function(uri, response, cb) {
 		var $ = cheerio.load(response.body);
 		
 		
@@ -143,23 +130,63 @@ module.exports = function(_base, _asset, _path, _directory) {
 			
 			/* Serialize DOM to HTML
 			 */
-			cb(null, uri, $.html(), reference_document.references);
+			cb(null, uri, 'text/html', $.html(), reference_document.references);
 		});
 	};
-	
-	
-	
+
+
+
+	/**
+	 * Will not perform any modifications on binary documents.
+	 * 
+	 * @param {URI} uri Document's location
+	 * @param {http.ServerResponse} response The document already
+	 *     downloaded from the server
+	 * @param {callback} cb Should point to save
+	 */
+	var modifyBlob = function(uri, response, cb) {
+		const contentType = response.headers['content-type'] ? response.headers['content-type'] : 'application/octet-stream';
+		cb(null, uri, contentType, response.body, []);
+	};
+
+
+
+	/**
+	 * Will perform modifications on downloaded content depending on content
+	 * type
+	 * 
+	 * @param {URI} uri Document's location
+	 * @param {http.ServerResponse} response The document already
+	 *     downloaded from the server
+	 * @param {callback} cb Should point to save
+	 */
+	var modify = function(uri, response, cb) {
+
+		/* If not an HTML document, use {@code modifyBlob}. Otherwise
+		 * discover further references
+		 */
+		if (!response.headers['content-type'] || !/^text\/html/i.test(response.headers['content-type']) || ('string' !== typeof(response.body))) {
+			modifyBlob(uri, response, cb);
+			return;
+		}
+
+		modifyHtml(uri, response, cb);
+	};
+
+
+
 	/**
 	 * Will save the modified document in the filesystem
 	 * 
 	 * @param {URI} uri Document's location
+	 * @param {string} contentType Document's content type
 	 * @param {string} content Document's content
 	 * @param {array of URI} references Unresolved references to other
 	 *     documents
 	 * @param {callback} cb Will be informed of `references'
 	 */
-	var save = function(uri, content, references, cb) {
-		var relative = _path(uri);
+	var save = function(uri, contentType, content, references, cb) {
+		var relative = _path(uri, contentType);
 		var absolute = path.resolve(_directory, relative);
 		var directory = path.dirname(absolute);
 		
@@ -168,7 +195,7 @@ module.exports = function(_base, _asset, _path, _directory) {
 				cb(err);
 				return;
 			}
-			
+
 			fs.writeFile(absolute, content, 'UTF-8', function(err) {
 				if (err) {
 					cb(err);

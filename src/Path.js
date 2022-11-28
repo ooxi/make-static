@@ -125,10 +125,11 @@ module.exports = function(_base) {
 	
 	/**
 	 * @param {URI} uri Document's location
+	 * @param {string} contentType Document's content type
 	 * @return {string or false} Relative path to document if below base
 	 *     otherwise false
 	 */
-	return function(uri) {
+	return function(uri, contentType) {
 		
 		if (!(uri instanceof URI)) {
 			throw new Error('Argument must be an instance of URI but is `'+ uri +'\'');
@@ -159,7 +160,7 @@ module.exports = function(_base) {
 		
 		/* Append HTML file extension
 		 */
-		if (!/\.html?$/.test(path)) {
+		if (('text/html' === contentType) && !/\.html?$/.test(path)) {
 			path += '.html';
 		}
 		
