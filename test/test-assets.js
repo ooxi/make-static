@@ -24,7 +24,8 @@
 var assert = require('assert');
 var Asset = require('./../src/Asset.js');
 
-var asset = new Asset('/tmp/test-assets');
+const ASSET_DIRECTORY = '/tmp/test-assets';
+var asset = new Asset(ASSET_DIRECTORY);
 
 
 
@@ -45,7 +46,7 @@ asset('https://upload.wikimedia.org/wikipedia/commons/e/ec/Wikipedia-logo-v2-de.
 	if (err) {
 		assert.fail(err, null, 'Did not expect an error');
 	};
-	assert.strictEqual(path, '0af92fe36033a7599a4e85fc2f9509ed.png');
+	assert.strictEqual(path, ASSET_DIRECTORY + '/0af92fe36033a7599a4e85fc2f9509ed.png');
 	
 	if (0 === --remaining) {
 		clearTimeout(timeout);
@@ -56,7 +57,7 @@ asset('https://de.wikipedia.org/wiki/Wikipedia:Hauptseite', function(err, path) 
 	if (err) {
 		assert.fail(err, null, 'Did not expect an error');
 	};
-	assert.strictEqual(path, '862838b31c106551b0b1bbb7b14985e9.html');
+	assert.strictEqual(path, ASSET_DIRECTORY + '/862838b31c106551b0b1bbb7b14985e9.html');
 	
 	if (0 === --remaining) {
 		clearTimeout(timeout);
