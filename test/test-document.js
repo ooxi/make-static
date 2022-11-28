@@ -22,7 +22,7 @@
  *  3. This notice may not be removed or altered from any source distribution.
  */
 var assert = require('assert');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 var Asset = require('./../src/Asset.js');
 var Document = require('./../src/Document.js');

@@ -27,7 +27,7 @@ var mime = require('mime');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var request = require('request');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 
 

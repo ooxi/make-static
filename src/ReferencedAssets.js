@@ -22,7 +22,7 @@
  *  3. This notice may not be removed or altered from any source distribution.
  */
 var path = require('path');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 
 

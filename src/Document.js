@@ -27,7 +27,7 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var request = require('request');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 var ReferencedAssets = require('./ReferencedAssets.js');
 var ReferencedDocuments = require('./ReferencedDocuments.js');

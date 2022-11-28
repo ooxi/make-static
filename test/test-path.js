@@ -23,7 +23,7 @@
  */
 var assert = require('assert');
 var Path = require('./../src/Path.js');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 
 
