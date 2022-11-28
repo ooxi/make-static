@@ -1,5 +1,4 @@
-make-static
-===========
+# make-static
 
 make-static allows you to create static exports of your pseudo dynamic website
 without much hassle.
@@ -14,8 +13,7 @@ below that URL to an archive in the local directory.
 
 
 
-What do I have to keep in mind when using make-static
------------------------------------------------------
+## What do I have to keep in mind when using make-static
 
  * make-static will click on every link it encounters. If you want to export a
    wiki with a public "delete page" action make-static might delete all your
@@ -32,4 +30,12 @@ What do I have to keep in mind when using make-static
 
    While make-static will support multiple base URLs in the future, it does not
    do so now.
+
+
+
+## Quickstart
+
+```
+mc _ make
+```
 
