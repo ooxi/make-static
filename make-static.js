@@ -27,7 +27,8 @@ var argv = require('optimist')
 var fs = require('fs-extra');
 var path = require('path');
 var mkdirp = require('mkdirp');
-var tgz = require('tar.gz');
+var tar = require('tar');
+var TraceError = require('trace-error');
 var tmp = require('tmp');
 var URI = require('urijs');
 
@@ -58,7 +59,9 @@ tmp.dir({prefix: 'make-static-'}, function(err, directory) {
 	/* Make another directory inside `directory' which is named after the
 	 * hostname (tgz will otherwise use the temporary name as base)
 	 */
-	directory = path.resolve(directory, base.hostname());
+	const tarDirectoryPrefix = directory;
+	const tarDirectoryName = base.hostname()
+	directory = path.resolve(tarDirectoryPrefix, tarDirectoryName);
 	mkdirp.sync(directory);
 
 
@@ -91,9 +94,20 @@ tmp.dir({prefix: 'make-static-'}, function(err, directory) {
 		var level = 9;
 		var name = base.hostname() +'.tar.gz';
 
-		new tgz(level).compress(directory, name, function(err) {
-			if (err) throw err;
+		tar.create({
+			'gzip': true,
+			'cwd': tarDirectoryPrefix,
+			'strict': true,
+		}, [tarDirectoryName]).on('error', function(err) {
 			fs.remove(directory);
+			fs.remove(name);
+			throw new TraceError('Failed creating archive `'+ name +'\'', err);
+
+		}).pipe(fs.createWriteStream(name)).on('error', function(err) {
+			fs.remove(directory);
+			fs.remove(name);
+			throw new TraceError('Failed writing export archive to `'+ name +'\'', err);
+		}).on('end', function() {
 			console.log('[F] Archived export written to `'+ name +'\'');
 		});
 	};
