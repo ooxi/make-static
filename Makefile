@@ -18,5 +18,5 @@ build:
 
 .PHONY:	test
 test:
-	nodejs 'make-static.js' 'https://example.net'
+	nodejs 'make-static.js' 'https://violetland.github.io/'
 
