@@ -29,7 +29,7 @@ var path = require('path');
 var mkdirp = require('mkdirp');
 var tgz = require('tar.gz');
 var tmp = require('tmp');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 var Asset = require('./src/Asset.js');
 var MakeStatic = require('./src/MakeStatic.js');

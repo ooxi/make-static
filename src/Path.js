@@ -23,7 +23,7 @@
  */
 var md5 = require('MD5');
 var path = require('path');
-var URI = require('URIjs');
+var URI = require('urijs');
 
 
 
