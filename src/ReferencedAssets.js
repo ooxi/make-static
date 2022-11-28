@@ -57,9 +57,9 @@ module.exports = function(_base, _document, _asset, _path, _directory) {
 			}
 			var relative = new URI(value);
 
-			/* Do not try to change data or mailto URNs
+			/* Do not try to change certain URNs
 			 */
-			if (('data' === relative.protocol()) || ('mailto' === relative.protocol())) {
+			if (['callto', 'data', 'mailto', 'tel'].includes(relative.protocol())) {
 				return;
 			}
 			var absolute = relative.absoluteTo(_document);

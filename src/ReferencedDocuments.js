@@ -55,8 +55,7 @@ module.exports = function(_base, _document, _path) {
 
 			/* We are not interested in certain protocols
 			 */
-			const protocol = relative.protocol();
-			if (['callto', 'data', 'mailto', 'tel'].includes(protocol)) {
+			if (['callto', 'data', 'mailto', 'tel'].includes(relative.protocol())) {
 				return;
 			}
 
