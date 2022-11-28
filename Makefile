@@ -1,7 +1,8 @@
 .PHONY:	all
 all:	clean	\
 	build	\
-	test
+	test	\
+	run
 
 
 .PHONY:	clean
@@ -18,5 +19,13 @@ build:
 
 .PHONY:	test
 test:
+	# Too fragile
+	#nodejs 'test/test-assets.js'
+	#nodejs 'test/test-document.js'
+	nodejs 'test/test-path.js'
+
+
+.PHONY:	run
+run:
 	nodejs 'make-static.js' 'https://violetland.github.io/'
 
