@@ -21,6 +21,8 @@
  *
  *  3. This notice may not be removed or altered from any source distribution.
  */
+var TraceError = require('trace-error');
+
 var Document = require('./Document.js');
 
 
@@ -112,8 +114,8 @@ module.exports = function(_base, _asset, _path, _directory) {
 	 *     computationally expensive, the documents will be downloaded one
 	 *     after another to avoid overloading the server
 	 *
-	 *     In the we might even add a user defined delay between two
-	 *     receiving two documents
+	 *     In the event of overloading a server we might even add a user
+	 *     defined delay between two receiving two documents
 	 */
 	var next = function() {
 
@@ -155,7 +157,9 @@ module.exports = function(_base, _asset, _path, _directory) {
 
 		_document(entry.uri, function(err, references) {
 			if (err) {
-				entry.callback(err);
+				invoke_next(function() {
+					entry.callback(new TraceError('Failed exporting `'+ uri_s +'\'', err));
+				});
 				return;
 			}
 
