@@ -84,8 +84,12 @@ module.exports = function(_base, _document, _path) {
 
 			/* Change reference to local file (will most likely be a
 			 * relative path)
+			 *
+			 * @warning It's easier to make all references absolute
+			 *     otherwise we would have to change the documents'
+			 *     base URL
 			 */
-			var path = _path(absolute);
+			var path = '/' + _path(absolute);
 
 
 			/* Keep anchor for JavaScript actions
