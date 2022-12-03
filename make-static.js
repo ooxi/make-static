@@ -73,7 +73,7 @@ tmp.dir({prefix: 'make-static-'}, function(err, directory) {
 		new Path(base),
 		directory
 	);
-	var limit = 1;
+	var limit = 10;
 
 
 	/* Get progress notifications
@@ -91,7 +91,6 @@ tmp.dir({prefix: 'make-static-'}, function(err, directory) {
 		/* Add all files and directories to archive and remove temporary
 		 * files afterwards
 		 */
-		var level = 9;
 		var name = base.hostname() +'.tar.gz';
 
 		tar.create({
