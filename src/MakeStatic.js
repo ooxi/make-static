@@ -190,10 +190,12 @@ module.exports = function(_base, _asset, _path, _directory) {
 	 * @param {function} before Should be invoked before `next'
 	 */
 	var invoke_next = function(before) {
-		try {
-			before();
-		} finally {
-			next();
-		}
+		process.nextTick(function() {
+			try {
+				before();
+			} finally {
+				next();
+			}
+		});
 	};
 };
