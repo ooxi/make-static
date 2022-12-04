@@ -150,6 +150,7 @@ module.exports = function(_directory) {
 				if (err) {
 					cb(err);
 				} else {
+					_cache[url] = absolute;
 					cb(null, absolute);
 				}
 			});
